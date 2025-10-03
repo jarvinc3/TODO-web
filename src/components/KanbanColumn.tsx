@@ -33,6 +33,7 @@ export default function KanbanColumn({
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const columnRef = useRef<HTMLDivElement>(null);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -149,7 +150,7 @@ export default function KanbanColumn({
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, column.id)}
         style={{
-          maxHeight: 'calc(65vh)',
+          maxHeight: isMobile ? 'calc(64vh)' : 'calc(70vh)',
         }}
       >
         {tasks.map((task) => (

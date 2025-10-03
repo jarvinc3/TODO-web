@@ -167,7 +167,7 @@ function KanbanBoard() {
    }
 
    return (
-      <div className="h-screen w-screen bg-background flex flex-col">
+      <div className="h-screen w-screen bg-background overflow-y-hidden flex flex-col">
          {/* Header */}
          <div className="mx-auto p-4 md:p-8 w-full">
             <div className="bg-surface rounded-2xl shadow-sm p-4 md:p-6">
@@ -229,7 +229,7 @@ function KanbanBoard() {
          </div>
 
          {/* Kanban Board */}
-         <div className="flex-1 mx-auto px-4 md:px-8 w-full">
+         <div className="flex-1 mx-auto px-4 md:px-8 w-full overflow-y-hidden">
             <div id="kanban-scroll-container" className="flex gap-4 overflow-x-auto pb-4 h-full scroll-smooth">
                {columns.map((column) => (
                   <KanbanColumn

@@ -59,7 +59,7 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
     touchStartPos.current = { x: touch.clientX, y: touch.clientY };
     currentTouchPos.current = { x: touch.clientX, y: touch.clientY };
     setTouchStarted(true);
-    
+
     // Delay to distinguish between tap and drag
     longPressTimer.current = window.setTimeout(() => {
       if (touchStarted) {
@@ -68,7 +68,7 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
         const syntheticEvent = {
           dataTransfer: {
             effectAllowed: 'move',
-            setData: () => {},
+            setData: () => { },
           },
         } as unknown as React.DragEvent;
         onDragStart(syntheticEvent, task);
@@ -84,11 +84,11 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!touchStarted) return;
-    
+
     const touch = e.touches[0];
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
-    
+
     // Update current touch position
     currentTouchPos.current = { x: touch.clientX, y: touch.clientY };
 
@@ -126,7 +126,7 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
 
     const touch = e.changedTouches[0];
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    
+
     // Find the drop target column
     let dropTarget = element;
     while (dropTarget && !dropTarget.hasAttribute('data-column-id')) {
@@ -180,6 +180,13 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
     };
   }, []);
 
+  const handleClick = () => {
+    // Only trigger onClick if not dragging
+    if (!isDragging) {
+      onClick(task);
+    }
+  };
+
   return (
     <div
       ref={cardRef}
@@ -192,12 +199,12 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
         setIsDragging(false);
         onDragEnd(e);
       }}
+      onClick={handleClick}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className={`rounded-2xl shadow-sm border border-secondary cursor-move hover:shadow-md transition-all hover:scale-[1.02] animate-fade-in touch-none ${
-        isDragging ? 'opacity-50 scale-105 shadow-lg' : ''
-      }`}
+      className={`rounded-2xl shadow-sm border border-secondary cursor-pointer hover:shadow-md transition-all hover:scale-[1.02] animate-fade-in touch-none ${isDragging ? 'opacity-50 scale-105 shadow-lg' : ''
+        }`}
       style={{ backgroundColor: typeColor }}
     >
       <p className="text-sm font-semibold text-white/80 text-center">
@@ -208,17 +215,17 @@ export default function TaskCard({ task, onDragStart, onDragEnd, onClick }: Task
         {/* Title */}
         <div className="bg-background rounded-xl p-2 border-2 border-dashed border-border">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-semibold text-text mb-2 line-clamp-2">
+            <h2 className="text-base font-semibold text-text mb-2 line-clamp-1">
               {task.title}
-            </h3>
-            <h3 className="text-sm text-text-secondary mb-2 line-clamp-2">
+            </h2>
+            <p className="text-sm text-text-secondary mb-2">
               {format(task.created_at, 'MMMM,dd')}
-            </h3>
+            </p>
           </div>
 
           {/* Description */}
           {task.description && (
-            <p className="text-sm text-text-secondary mb-4 line-clamp-2">
+            <p className="text-sm text-text-secondary line-clamp-2">
               {task.description}
             </p>
           )}

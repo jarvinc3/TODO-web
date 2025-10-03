@@ -145,7 +145,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, task, col
                   onClick={handleDelete}
                   className="px-4 py-2 bg-error text-white rounded-lg hover:opacity-90 transition-all hover:scale-105"
                 >
-                  Delete
+                  Delete Task
                 </button>
               )}
               <button
