@@ -21,3 +21,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+yarn.lock
+.pnpm-lock.yaml
+package-lock.json
+.yarn
+.next
+.bolt
