@@ -25,7 +25,7 @@ export default function SettingsPage({ onClose }: SettingsPageProps) {
    };
 
    return (
-      <div className="fixed inset-0 bg-background z-50 overflow-y-auto">
+      <div className="fixed inset-0 bg-background z-50 overflow-y-auto scroll-hidden">
          {/* Sticky Header */}
          <div className="sticky max-w-5xl mx-auto flex items-center gap-2 top-0 bg-background/95 backdrop-blur-sm border-b border-border z-10 p-4 sm:p-6">
             <button

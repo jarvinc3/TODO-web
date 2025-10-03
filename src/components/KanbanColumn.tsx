@@ -150,7 +150,7 @@ export default function KanbanColumn({
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, column.id)}
         style={{
-          maxHeight: isMobile ? 'calc(64vh)' : 'calc(70vh)',
+          maxHeight: isMobile ? 'calc(70vh)' : 'calc(80vh)',
         }}
       >
         {tasks.map((task) => (

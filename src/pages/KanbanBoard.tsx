@@ -32,6 +32,7 @@ function KanbanBoard() {
    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
    const [selectedColumn, setSelectedColumn] = useState<Column | null>(null);
    const [taskColumnId, setTaskColumnId] = useState('');
+   const isMobile = window.innerWidth < 768;
 
    // Task Drag & Drop handlers
    const handleTaskDragStart = (e: React.DragEvent, task: Task) => {
@@ -167,64 +168,66 @@ function KanbanBoard() {
    }
 
    return (
-      <div className="h-screen w-screen bg-background overflow-y-hidden flex flex-col">
+      <div className="h-screen w-screen bg-background overflow-y-hidden flex flex-col gap-5">
          {/* Header */}
-         <div className="mx-auto p-4 md:p-8 w-full">
-            <div className="bg-surface rounded-2xl shadow-sm p-4 md:p-6">
-               <div className="flex items-center justify-between mb-6">
-                  <ProjectSelector
-                     projects={projects}
-                     currentProject={currentProject || projects[0]}
-                     onSelectProject={handleSelectProject}
-                     onCreateProject={() => setIsNewProjectModalOpen(true)}
+         <div className="flex flex-row md:justify-between items-center gap-3 mx-auto bg-surface border-b border-border shadow-md p-4 w-full">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 w-full">
+               <ProjectSelector
+                  projects={projects}
+                  currentProject={currentProject || projects[0]}
+                  onSelectProject={handleSelectProject}
+                  onCreateProject={() => setIsNewProjectModalOpen(true)}
+               />
+               <div className="relative flex-1 w-full md:max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" />
+                  <input
+                     type="text"
+                     placeholder="Search tasks..."
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     className="pl-10 pr-4 py-2 w-full bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                   />
+               </div>
+            </div>
 
-                  <button
-                     onClick={() => setIsSettingsOpen(true)}
-                     className="p-2 text-text-secondary hover:text-primary transition-all hover:scale-110"
+            <div className="flex flex-col gap-3 md:flex-row items-end md:items-center ">
+               {isMobile && <button
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
+
+               >
+                  <SettingsIcon className="w-5 h-5" />
+               </button>}
+               <div className="flex items-center justify-between gap-3 w-full md:w-auto">
+                  <select
+                     value={filterType}
+                     onChange={(e) => setFilterType(e.target.value)}
+                     className="w-full md:w-auto px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
                   >
-                     <SettingsIcon className="w-5 h-5" />
-                  </button>
+                     <option value="All">All types</option>
+                     {settings.taskTypes?.map(type => (
+                        <option key={type.name} value={type.name}>{type.name}</option>
+                     ))}
+                  </select>
+
+                  <select
+                     value={filterPriority}
+                     onChange={(e) => setFilterPriority(e.target.value)}
+                     className="w-full md:w-auto px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
+                  >
+                     <option value="All">All priorities</option>
+                     {settings.priorities?.map(priority => (
+                        <option key={priority.name} value={priority.name}>{priority.name}</option>
+                     ))}
+                  </select>
                </div>
+               {!isMobile && <button
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
 
-               <div className="flex flex-col gap-3 sm:flex-row items-center w-full">
-                  <div className="flex justify-between items-center gap-3 w-full">
-                     <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" />
-                        <input
-                           type="text"
-                           placeholder="Search tasks..."
-                           value={searchQuery}
-                           onChange={(e) => setSearchQuery(e.target.value)}
-                           className="pl-10 pr-4 py-2 w-full bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-                        />
-                     </div>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-3 w-full sm:w-auto">
-                     <select
-                        value={filterType}
-                        onChange={(e) => setFilterType(e.target.value)}
-                        className="w-full sm:w-auto px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
-                     >
-                        <option value="All">All types</option>
-                        {settings.taskTypes?.map(type => (
-                           <option key={type.name} value={type.name}>{type.name}</option>
-                        ))}
-                     </select>
-
-                     <select
-                        value={filterPriority}
-                        onChange={(e) => setFilterPriority(e.target.value)}
-                        className="w-full sm:w-auto px-4 py-2 bg-surface border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition-all"
-                     >
-                        <option value="All">All priorities</option>
-                        {settings.priorities?.map(priority => (
-                           <option key={priority.name} value={priority.name}>{priority.name}</option>
-                        ))}
-                     </select>
-                  </div>
-               </div>
+               >
+                  <SettingsIcon className="w-5 h-5" />
+               </button>}
             </div>
          </div>
 
